@@ -1,0 +1,175 @@
+/* Variables globales */
+:root {
+  --color-fondo: #161616e5;
+  --color-purple: purple;
+  --color-white: white;
+  --color-orange: orange;
+  --font-primary: system-ui, sans-serif;
+}
+
+/* Reset y cuerpo */
+body {
+  margin: 0;
+  background: var(--color-fondo);
+  font-family: var(--font-primary);
+  display: grid;
+}
+
+/* HEADER */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+}
+
+.header-logo {
+  width: 120px;
+  height: 120px;
+}
+
+.header-buttons {
+  display: flex;
+  align-items: center;
+  gap: 42px;
+}
+
+.btn-text {
+  background: transparent;
+  border: none;
+  color: var(--color-white);
+  cursor: pointer;
+  font-style: italic;
+  font-weight: 900;
+  font-size: 16px;
+  width: 168px;
+  height: 28px;
+  line-height: 28px;
+  text-align: center;
+  padding: 0;
+}
+
+.btn-icon {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+/* PRODUCTOS */
+.cuadro-morado {
+  width: 250px;
+  height: 350px;
+  background-color: var(--color-purple);
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.texto-producto {
+  margin-top: 10px;
+  margin-bottom: 5px;
+  color: var(--color-white);
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.texto-precio {
+  color: var(--color-white);
+  font-size: 16px;
+}
+
+/* CATEGORÍAS */
+.texto-categorias {
+  font-size: 46px;
+  font-style: italic;
+  font-weight: 900;
+  color: var(--color-white);
+  /* Evitar ancho y alto fijos */
+  margin: 0 0 20px 0;
+  text-align: right;
+}
+
+/* BOTONES */
+.boton-morado {
+  width: 222px;
+  height: 228px;
+  background-color: var(--color-purple);
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+  padding: 0;
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.boton-morado:hover {
+  box-shadow: 0 0 20px 6px rgba(255, 0, 255, 0.7);
+  transform: scale(1.05);
+}
+
+/* CONTACTO */
+.contacto-txt {
+  font-size: 18px;
+  font-style: italic;
+  font-weight: 900;
+  margin: 5px 0;
+}
+
+/* SCROLL TO TOP */
+.scroll-to-top {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: var(--color-purple);
+  color: var(--color-white);
+  padding: 10px 20px;
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  font-size: 24px;
+}
+
+/* BOTONES CON IMAGEN DE FONDO */
+.boton-ver-mas,
+.boton-comprar {
+  width: 120px;
+  height: 40px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  transition: filter 0.3s ease;
+  text-indent: -9999px; /* para accesibilidad si hay texto */
+}
+
+.boton-ver-mas {
+  background-image: url('/images/vermas.png');
+}
+
+.boton-comprar {
+  background-image: url('/images/comprar.png');
+}
+
+.boton-ver-mas:hover,
+.boton-comprar:hover {
+  filter: brightness(1.3);
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .header {
+    flex-direction: column;
+    gap: 10px;
+  }
+  .header-logo {
+    width: 80px;
+    height: 80px;
+  }
+  .texto-categorias {
+    font-size: 32px;
+    text-align: center;
+  }
+}

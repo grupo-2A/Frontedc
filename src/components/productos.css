@@ -1,0 +1,50 @@
+.cuadro-morado {
+    background-color: #6a0dad; /* morado */
+    width: 300px;
+    height: 300px;
+    border-radius: 12px;
+    display: flex;
+    justify-content: center; /* centra horizontalmente */
+    align-items: center;     /* centra verticalmente */
+    overflow: hidden;
+    transition: box-shadow 0.3s ease;
+  }
+  
+  .cuadro-morado img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    border-radius: 4px;
+    transition: filter 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  /* Efecto brillo al pasar el cursor */
+  .cuadro-morado:hover img {
+    filter: brightness(1.2);
+    box-shadow: 0 0 15px 5px rgba(255, 255, 255, 0.7);
+  }
+  
+  .texto-producto {
+    font-weight: bold;
+    margin-top: 10px;
+  }
+  
+  .texto-precio {
+    color: #f7f1f1;
+    margin-bottom: 10px;
+  }
+  
+  .boton-comprar {
+  
+    border: none;
+    color: white;
+    padding: 8px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .boton-comprar:hover {
+    background-color: #8b2dd2;
+  }
+  

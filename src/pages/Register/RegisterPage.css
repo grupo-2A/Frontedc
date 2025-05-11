@@ -1,0 +1,199 @@
+
+.register-container {
+  position: relative;
+  min-height: 100vh;
+  color: white;
+  font-family: Arial, sans-serif;
+  padding: 60px 20px 40px 20px;
+  overflow: hidden;
+
+  background-size: 40px 40px;
+
+  animation: pixelFade 10s infinite alternate;
+}
+
+/* Animación para alternar entre morado y negro */
+@keyframes pixelFade {
+  0% {
+    background-color: #111;
+    filter: brightness(1);
+  }
+  50% {
+    background-color: rgb(63, 20, 63);
+    filter: brightness(1.2);
+  }
+  100% {
+    background-color: #111;
+    filter: brightness(1);
+  }
+}
+
+/* Botón volver arriba derecha */
+.volver-button {
+  position: fixed;
+  top: 20px;
+  right: 50px;
+  background-color: black;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-weight: bold;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  z-index: 1000;
+}
+
+.volver-button:hover {
+  background-color: purple;
+  color: white;
+}
+
+/* Contenedor principal */
+.register-content {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  gap: 40px;
+  flex-wrap: wrap;
+}
+
+/* Formulario */
+.register-form {
+  max-width: 400px;
+  width: 100%;
+  text-align: center; /* Centrar texto */
+  margin-top: 0;
+  padding-top: 0;
+}
+
+.register-form h2 {
+  font-size: 28px;
+  margin-top: 0;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.register-form p {
+  font-size: 14px;
+  margin-bottom: 20px;
+  color: #ccc;
+}
+
+.register-form input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: none;
+  border-bottom: 1px solid #ccc;
+  background-color: transparent;
+  color: white;
+  font-size: 14px;
+}
+
+.register-form input::placeholder {
+  color: #aaa;
+}
+
+/* Mensajes de error */
+.error {
+  color: #ff6b6b;
+  font-size: 12px;
+  margin-top: -8px;
+  margin-bottom: 8px;
+}
+
+/* Botón registrarse */
+.register-button {
+  width: 100%;
+  padding: 12px;
+  background-color: rgb(0, 0, 0);
+  border: none;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  border-radius: 8px;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+}
+
+.register-button:hover {
+  background-color: purple; /* Morado más oscuro */
+}
+
+/* Texto "Inicia sesión" en morado */
+.login-link {
+  margin-top: 15px;
+  font-size: 14px;
+  color: #ccc;
+}
+
+.login-link-color {
+  color: purple;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.login-link-color:hover {
+  color: #4b0082;
+}
+
+/* Imagen y texto lateral */
+.register-image {
+  text-align: center;
+  max-width: 350px;
+}
+
+.register-image img {
+  width: 100%;
+  max-width: 300px;
+  margin-bottom: 20px;
+}
+
+.register-image h1 {
+  font-size: 24px;
+  letter-spacing: 8px;
+  color: white;
+}
+
+/* Footer */
+.footer {
+  display: flex;
+  justify-content: space-around;
+  gap: 20px;
+  padding: 40px 20px 20px 20px;
+  background-color: #000;
+  color: white;
+  flex-wrap: wrap;
+  margin-top: 40px;
+}
+
+.footer-section {
+  max-width: 300px;
+}
+
+.footer-section.logo {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.footer-section.logo img {
+  width: 110px;
+  height: 110px;
+}
+
+.footer-section h3 {
+  margin-bottom: 10px;
+}
+
+.footer-section p {
+  margin: 4px 0;
+}
+
+copyright {
+  text-align: center;
+  font-size: 12px;
+  color: #888;
+  margin-top: 20px;
+}

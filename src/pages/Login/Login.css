@@ -1,0 +1,177 @@
+/* Animación para alternar entre morado y negro */
+/* Animación para fondo pixelado */
+@keyframes pixelFade {
+  0% {
+    background-color: #111;
+    filter: brightness(1);
+  }
+  50% {
+    background-color: rgb(63, 20, 63);
+    filter: brightness(1.2);
+  }
+  100% {
+    background-color: #111;
+    filter: brightness(1);
+  }
+}
+
+/* Contenedor principal con animación de fondo */
+.container {
+  background: #111;
+  color: #fff;
+  font-family: Arial, sans-serif;
+  min-height: 100vh;
+  animation: pixelFade 10s infinite alternate;
+}
+
+/* Contenido principal */
+.mainContent {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 40px 20px;
+}
+
+/* Sección del formulario */
+.formSection {
+  max-width: 400px;
+}
+
+/* Título */
+.title {
+  font-size: 28px;
+  margin-bottom: 10px;
+}
+
+/* Subtítulo */
+.subtitle {
+  color: #ccc;
+  font-size: 14px;
+  margin-bottom: 20px;
+}
+
+/* Inputs */
+.input {
+  width: 100%;
+  padding: 10px;
+  margin: 8px 0;
+  border: none;
+  border-bottom: 1px solid #ccc;
+  background-color: transparent;
+  color: white;
+}
+
+/* Texto de registro */
+.registerText {
+  font-size: 12px;
+  color: #ccc;
+}
+
+/* Enlaces */
+.link {
+  color: purple; /* Morado */
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+/* Botón de inicio de sesión */
+.loginButton {
+  margin-top: 15px;
+  padding: 10px 20px;
+  background-color: #fff;
+  color: #111;
+  border: none;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.loginButton:hover {
+  background-color: purple; /* Cambia a morado al pasar el cursor */
+  color: white;
+}
+
+/* Sección de imagen */
+.imageSection {
+  text-align: center;
+}
+
+/* Imagen caja */
+.boxImage {
+  width: 300px;
+  margin-bottom: 20px;
+}
+
+/* Texto logo */
+.logoText {
+  font-size: 24px;
+  letter-spacing: 8px;
+  color: #fff;
+}
+
+/* Contenedor del footer */
+.footerContainer {
+  display: flex;
+  justify-content: space-between;
+  gap: 200px;
+  padding: 0 40px;
+  margin-bottom: 40px;
+}
+
+/* Sección logo en footer */
+.footerLogoSection {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+/* Imagen logo footer */
+.footerLogoImage {
+  width: 110px;
+  height: 110px;
+}
+
+/* Texto logo footer */
+.footerLogoText {
+  font-size: 20px;
+  font-weight: 900;
+  color: white;
+}
+
+/* Caja footer */
+.footerBox {
+  background-color: black;
+  padding: 20px 30px;
+  border-radius: 12px;
+  color: white;
+  width: 300px;
+}
+
+/* Texto copyright */
+.copyright {
+  font-size: 12px;
+  text-align: center;
+  color: #888;
+  margin-bottom: 10px;
+}
+
+/* Botón volver */
+.volverButton {
+  background-color: black; /* Fondo negro */
+  color: white;            /* Texto blanco */
+  border: none;
+  padding: 10px 20px;
+  font-weight: bold;
+  cursor: pointer;
+  position: fixed;         /* Fijo en la página */
+  top: 20px;               /* Separado 20px del borde superior */
+  right: 20px;             /* Separado 20px del borde derecho */
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+  z-index: 1000;           /* Encima de otros elementos */
+}
+
+.volverButton:hover {
+  background-color: purple; /* Cambia a morado al pasar el cursor */
+  color: white;
+}

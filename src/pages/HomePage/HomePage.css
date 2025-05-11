@@ -1,0 +1,118 @@
+body {
+  /* Degradado lineal de negro (#000000) a gris oscuro (#555555) */
+  background: linear-gradient(90deg, #000000, #555555);
+  /* Para que el fondo cubra toda la altura */
+  min-height: 100vh;
+  margin: 0; /* Elimina márgenes por defecto */
+}
+.texto-categoria {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 36px;
+  font-style: italic;
+  font-weight: bold;
+  color: #fff;
+  background: #333;
+  padding: 4px 12px;
+  display: inline-block;
+  border-radius: 20px; /* opcional, si quieres bordes suaves */
+  margin-left: 30px; /* Ajusta este valor según el espacio que quieras */
+  
+  /* Asegura que el texto esté alineado a la izquierda */
+  text-align: left;
+}
+
+
+
+.featured-products-header {
+    display: flex;
+    align-items: center;
+    margin: 20px 0;
+    gap: 20px; /* Espacio entre título y botón */
+    justify-content: center; /* Centra todos los elementos horizontalmente */
+    position: relative; /* Para posicionar el botón si quieres */
+  }
+  
+  /* Para que el título quede separado del borde (por ejemplo, margen izquierdo) */
+  .featured-products-title {
+    display: flex;
+    color: white; 
+    align-items: center;
+    gap: 10px;
+    margin-right: auto; /* Empuja el título hacia la izquierda */
+    padding-left: 30px; /* Separación del borde izquierdo */
+  }
+  
+  /* Color del icono */
+  .fire-icon {
+    color: #ff4500;
+  }
+  
+  /* Centrar el botón "Ver más" */
+  .boton-ver-mas {
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    cursor: pointer;
+    border-radius: 4px;
+    margin: 0 auto; /* Centra el botón */
+    position: absolute;
+    right: 50%; /* Mueve el botón al centro horizontal */
+    transform: translateX(50%); /* Ajusta para centrar exactamente */
+  }
+  
+ 
+  
+  .frame-image-container {
+    display: flex;
+    justify-content: center; /* Centra horizontalmente */
+    align-items: center;     /* Centra verticalmente si el contenedor tiene altura */
+    margin: 20px 0;          /* Opcional: espacio arriba y abajo */
+  }
+  
+  .frame-image {
+    max-width: 100%;         /* Que no exceda el ancho del contenedor */
+    height: auto;            /* Mantener proporción */
+    display: block;
+  }
+  
+  
+  .hero-image-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 20px 0;
+  }
+  
+    
+  /* Contenedor de puntos */
+  .slider-dots {
+    margin-top: 12px;
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+  }
+  
+  /* Estilo de cada punto */
+  .dot {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background-color: #ccc;
+    cursor: pointer;
+    transition: background-color 0.3s, box-shadow 0.3s;
+    box-shadow: none;
+    outline: none;
+  }
+  
+  /* Punto activo */
+  .dot.active {
+    background-color: #6a0dad;
+    box-shadow: 0 0 8px #6a0dad;
+  }
+  
+  /* Para accesibilidad: foco visible */
+  .dot:focus {
+    outline: 2px solid #6a0dad;
+    outline-offset: 2px;
+  }
+  

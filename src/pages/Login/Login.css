@@ -1,5 +1,5 @@
 /* Animación para alternar entre morado y negro */
-/* Animación para fondo pixelado */
+
 @keyframes pixelFade {
   0% {
     background-color: #111;

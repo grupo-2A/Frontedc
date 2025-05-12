@@ -2,7 +2,7 @@ import React from 'react';
 import './footer.css';
 
 const Footer = () => (
-  <div id="contacto" className="footer-container">
+  <><div id="contacto" className="footer-container">
     <div className="footer-logo-section">
       <img src="/public/images/logo.png" alt="Ícono" className="footer-logo" />
       <h2 className="footer-title">Loot para tu Setup</h2>
@@ -21,7 +21,9 @@ const Footer = () => (
       <p className="contacto-txt">Iniciar sesión / Registrarse</p>
       <p className="contacto-txt">Carrito</p>
     </div>
-  </div>
+
+
+  </div><p className="copyright">Copyright Rimel 2025. Todos los derechos reservados. </p></>
 );
 
 export default Footer;

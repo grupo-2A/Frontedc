@@ -1,71 +1,96 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import './Login.css'; // Importamos el CSS
+import './Login.css';
+import Footer from '../../components/Footer/Footer'; // Componente de pie de página
 
 const LoginPage = () => {
   const navigate = useNavigate();
 
+  // Estados para inputs y mensaje
+  const [emailOrPhone, setEmailOrPhone] = useState('');
+  const [password, setPassword] = useState('');
+  const [message, setMessage] = useState('');
+
+  const handleLogin = async () => {
+    if (!emailOrPhone || !password) {
+      setMessage('Por favor, completa todos los campos');
+      return;
+    }
+
+    try {
+      const response = await fetch('http://localhost:8000/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          email_or_phone: emailOrPhone,
+          password: password
+        })
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        setMessage(data.message);
+        // Redirigir a CartPage tras login exitoso
+        navigate('/cart');
+      } else {
+        setMessage(data.message);
+      }
+    } catch (error) {
+      setMessage('Error al conectar con el servidor');
+      console.error(error);
+    }
+  };
+
   return (
     <div className="container">
-      {/* Botón para volver al Home */}
-      <button
-  onClick={() => navigate('/')}
-  className="volverButton"
->
-  Volver al Home
-</button>
+      <button onClick={() => navigate('/')} className="volverButton">
+        Volver al Home
+      </button>
 
-
-      {/* Sección principal */}
       <div className="mainContent">
-        {/* Formulario */}
         <div className="formSection">
           <h2 className="title">INICIAR SESIÓN EN OVERLOOT</h2>
           <p className="subtitle">Ingresa tus datos a continuación</p>
-          <input className="input" placeholder="Correo electrónico o número de teléfono" />
-          <input type="password" className="input" placeholder="Contraseña" />
+
+          <input
+            className="input"
+            placeholder="Correo electrónico o número de teléfono"
+            value={emailOrPhone}
+            onChange={(e) => setEmailOrPhone(e.target.value)}
+          />
+
+          <input
+            type="password"
+            className="input"
+            placeholder="Contraseña"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+
           <p className="registerText">
             ¿No tienes cuenta?{' '}
-            <span
-              className="link"
-              onClick={() => navigate('/registro')}
-            >
+            <span className="link" onClick={() => navigate('/registro')}>
               Regístrate
             </span>
           </p>
-          <button className="loginButton">INICIAR SESIÓN</button>
+
+          <button className="loginButton" onClick={handleLogin}>
+            INICIAR SESIÓN
+          </button>
+
+          {message && <p className="message">{message}</p>}
         </div>
 
-        {/* Imagen caja */}
         <div className="imageSection">
           <img src="/images/icon.png" alt="Caja" className="boxImage" />
           <h1 className="logoText">OVERLOOT</h1>
         </div>
       </div>
 
-      {/* Pie de página */}
-      <div id="contacto" className="footerContainer">
-        <div className="footerLogoSection">
-          <img src="/images/logo.png" alt="Ícono" className="footerLogoImage" />
-          <h2 className="footerLogoText">Loot para tu Setup</h2>
-        </div>
-
-        <div className="footerBox">
-          <h3>Contacto</h3>
-          <p>Bogotá, Colombia</p>
-          <p>overloot@loot.com</p>
-          <p>0000-0000-0000</p>
-        </div>
-
-        <div className="footerBox">
-          <h3>Cuenta</h3>
-          <p>Mi cuenta</p>
-          <p>Iniciar sesión / Registrarse</p>
-          <p>Carrito</p>
-        </div>
-      </div>
-
-      <p className="copyright">Copyright Rimel 2025. Todos los derechos reservados.</p>
+      <Footer />
     </div>
   );
 };

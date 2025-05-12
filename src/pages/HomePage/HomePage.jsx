@@ -107,7 +107,7 @@ const HomePage = () => {
       </main>
 
       <Footer />
-      <p className="copyright">Copyright Rimel 2025. Todos los derechos reservados.</p>
+     
 
       {showScrollToTop && (
         <button

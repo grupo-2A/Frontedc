@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import './productos.css'; // Importa los estilos CSS
+import axios from 'axios';
+import './productos.css';
 
-const productos = [
+const productosLocales = [
   { nombre: 'Monitor SAMSUNG 24"', imagen: '/images/destacados/monitor.png', precio: 449900 },
   { nombre: 'Juego PS5 EA Sports FC 25', imagen: '/images/destacados/fifa.png', precio: 319900 },
   { nombre: 'Portátil LENOVO 15.6"', imagen: '/images/destacados/portatil.png', precio: 2349900 },
@@ -19,13 +20,11 @@ const ProductCard = ({ producto }) => {
   return (
     <div style={{ textAlign: 'center' }}>
       <div className="cuadro-morado">
-        <img
-          src={producto.imagen}
-          alt={producto.nombre}
-        />
+        <img src={producto.imagen} alt={producto.nombre} />
       </div>
       <p className="texto-producto">{producto.nombre}</p>
       <p className="texto-precio">${producto.precio.toLocaleString()}</p>
+      <p className="texto-stock">Stock: {producto.cantidad ?? 'N/A'}</p>
       <button
         className="boton-comprar"
         onClick={() => navigate('/product')}
@@ -38,6 +37,29 @@ const ProductCard = ({ producto }) => {
 };
 
 const Productos = () => {
+  const [productos, setProductos] = useState(productosLocales);
+
+  useEffect(() => {
+    axios.get('http://localhost:8000/productos/') // Asegúrate que esta URL sea correcta
+      .then(res => {
+        const cantidades = res.data;
+
+        // Combinar cantidades con productosLocales
+        const productosConCantidad = productosLocales.map(prod => {
+          const productoConCantidad = cantidades.find(p => p.nombre === prod.nombre);
+          return {
+            ...prod,
+            cantidad: productoConCantidad ? productoConCantidad.cantidad : 0
+          };
+        });
+
+        setProductos(productosConCantidad);
+      })
+      .catch(err => {
+        console.error("Error al obtener cantidades:", err);
+      });
+  }, []);
+
   const rows = [];
   for (let i = 0; i < productos.length; i += 4) {
     rows.push(

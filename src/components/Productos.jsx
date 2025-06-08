@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './productos.css';
 
@@ -14,73 +13,58 @@ const productosLocales = [
   { id: 8, nombre: 'Tarjeta Gráfica Gt210', imagen: '/images/destacados/tarjeta.png', precio: 259900 }
 ];
 
-
-const ProductCard = ({ producto }) => {
-  const navigate = useNavigate();
-
-  return (
-    <div style={{ textAlign: 'center' }}>
-      <div className="cuadro-morado">
-        <img src={producto.imagen} alt={producto.nombre} />
-      </div>
-      <p className="texto-producto">{producto.nombre}</p>
-      <p className="texto-precio">${producto.precio.toLocaleString()}</p>
-      <p className="texto-stock">Stock: {producto.cantidad ?? 'N/A'}</p>
-      <button
-        className="boton-comprar"
-        onClick={() => navigate('/product')}
-        aria-label="Comprar"
-      >
-        Comprar
-      </button>
+const ProductCard = ({ producto }) => (
+  <div style={{ textAlign: 'center' }}>
+    <div className="cuadro-morado">
+      <img src={producto.imagen} alt={producto.nombre} width={120} />
     </div>
-  );
-};
+    <p className="texto-producto">{producto.nombre}</p>
+    <p className="texto-precio">${producto.precio.toLocaleString()}</p>
+    <p className="texto-stock">Stock: {producto.cantidad ?? 'Sin stock'}</p>
+    <button className="boton-comprar">Comprar</button>
+  </div>
+);
 
 const Productos = () => {
-  const [productos, setProductos] = useState(productosLocales);
+  const [productos, setProductos] = useState([]);
 
   useEffect(() => {
-    axios.get('http://localhost:8000/productos/') // Asegúrate que esta URL sea correcta
+    axios.get('http://localhost:8000/productos/')
       .then(res => {
-        const cantidades = res.data;
+        const productosDB = res.data;
 
-        // Combinar cantidades con productosLocales
-        const productosConCantidad = productosLocales.map(prod => {
-          const productoConCantidad = cantidades.find(p => p.nombre === prod.nombre);
+        // Combinar productos locales con cantidades del backend
+        const combinados = productosLocales.map(local => {
+          const encontrado = productosDB.find(p => p.nombre === local.nombre);
           return {
-            ...prod,
-            cantidad: productoConCantidad ? productoConCantidad.cantidad : 0
+            ...local,
+            cantidad: encontrado ? encontrado.cantidad : 0
           };
         });
 
-        setProductos(productosConCantidad);
+        setProductos(combinados);
       })
       .catch(err => {
-        console.error("Error al obtener cantidades:", err);
+        console.error("Error al cargar los productos desde la API:", err);
+        // fallback: sin stock
+        const sinStock = productosLocales.map(p => ({ ...p, cantidad: 0 }));
+        setProductos(sinStock);
       });
   }, []);
 
-  const rows = [];
-  for (let i = 0; i < productos.length; i += 4) {
-    rows.push(
-      <div
-        key={i}
-        style={{
-          display: 'flex',
-          justifyContent: 'center',
-          gap: '20px',
-          marginBottom: '40px'
-        }}
-      >
-        {productos.slice(i, i + 4).map((producto, idx) => (
-          <ProductCard key={idx} producto={producto} />
-        ))}
-      </div>
-    );
-  }
-
-  return <>{rows}</>;
+  return (
+    <div>
+      {productos.reduce((rows, producto, index) => {
+        if (index % 4 === 0) rows.push([]);
+        rows[rows.length - 1].push(producto);
+        return rows;
+      }, []).map((fila, i) => (
+        <div key={i} style={{ display: 'flex', justifyContent: 'center', gap: '20px', marginBottom: '40px' }}>
+          {fila.map(p => <ProductCard key={p.id} producto={p} />)}
+        </div>
+      ))}
+    </div>
+  );
 };
 
 export default Productos;

@@ -4,15 +4,16 @@ import axios from 'axios';
 import './productos.css';
 
 const productosLocales = [
-  { nombre: 'Monitor SAMSUNG 24"', imagen: '/images/destacados/monitor.png', precio: 449900 },
-  { nombre: 'Juego PS5 EA Sports FC 25', imagen: '/images/destacados/fifa.png', precio: 319900 },
-  { nombre: 'Portátil LENOVO 15.6"', imagen: '/images/destacados/portatil.png', precio: 2349900 },
-  { nombre: 'Silla de Oficina', imagen: '/images/destacados/sillaof.png', precio: 579900 },
-  { nombre: 'Esferas De Dragon Ball Z', imagen: '/images/destacados/esfera.png', precio: 199900 },
-  { nombre: 'Funko Pop! One Piece - Roronoa', imagen: '/images/destacados/zoro.png', precio: 89900 },
-  { nombre: 'Reproductor Mp5 Genérico', imagen: '/images/destacados/game.png', precio: 159900 },
-  { nombre: 'Tarjeta Gráfica Gt210', imagen: '/images/destacados/tarjeta.png', precio: 259900 }
+  { id: 1, nombre: 'Monitor SAMSUNG 24"', imagen: '/images/destacados/monitor.png', precio: 449900 },
+  { id: 2, nombre: 'Juego PS5 EA Sports FC 25', imagen: '/images/destacados/fifa.png', precio: 319900 },
+  { id: 3, nombre: 'Portátil LENOVO 15.6"', imagen: '/images/destacados/portatil.png', precio: 2349900 },
+  { id: 4, nombre: 'Silla de Oficina', imagen: '/images/destacados/sillaof.png', precio: 579900 },
+  { id: 5, nombre: 'Esferas De Dragon Ball Z', imagen: '/images/destacados/esfera.png', precio: 199900 },
+  { id: 6, nombre: 'Funko Pop! One Piece - Roronoa', imagen: '/images/destacados/zoro.png', precio: 89900 },
+  { id: 7, nombre: 'Reproductor Mp5 Genérico', imagen: '/images/destacados/game.png', precio: 159900 },
+  { id: 8, nombre: 'Tarjeta Gráfica Gt210', imagen: '/images/destacados/tarjeta.png', precio: 259900 }
 ];
+
 
 const ProductCard = ({ producto }) => {
   const navigate = useNavigate();

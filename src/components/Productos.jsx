@@ -13,6 +13,13 @@ const productosLocales = [
   { id: 8, nombre: 'Tarjeta Gráfica Gt210', imagen: '/images/destacados/tarjeta.png', precio: 259900 }
 ];
 
+const normalizarNombre = (nombre) =>
+  nombre.toLowerCase()
+    .replace(/["']/g, '') // elimina comillas
+    .replace(/[^a-z0-9 ]/gi, '') // elimina símbolos especiales
+    .replace(/\s+/g, ' ') // unifica espacios
+    .trim();
+
 const ProductCard = ({ producto }) => (
   <div style={{ textAlign: 'center' }}>
     <div className="cuadro-morado">
@@ -29,13 +36,16 @@ const Productos = () => {
   const [productos, setProductos] = useState([]);
 
   useEffect(() => {
-    axios.get('http://localhost:8000/productos/')
+    axios.get('http://localhost:8000/productosc/')
       .then(res => {
         const productosDB = res.data;
 
-        // Combinar productos locales con cantidades del backend
         const combinados = productosLocales.map(local => {
-          const encontrado = productosDB.find(p => p.nombre === local.nombre);
+          const nombreLocal = normalizarNombre(local.nombre);
+          const encontrado = productosDB.find(p =>
+            normalizarNombre(p.nombre) === nombreLocal
+          );
+
           return {
             ...local,
             cantidad: encontrado ? encontrado.cantidad : 0
@@ -46,7 +56,6 @@ const Productos = () => {
       })
       .catch(err => {
         console.error("Error al cargar los productos desde la API:", err);
-        // fallback: sin stock
         const sinStock = productosLocales.map(p => ({ ...p, cantidad: 0 }));
         setProductos(sinStock);
       });

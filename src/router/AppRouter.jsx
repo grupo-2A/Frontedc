@@ -8,6 +8,7 @@ import CartPage from '../pages/Cart/CartPage';
 import ProductDetail from '../pages/ProductDetail/ProductDetail';
 import OrderPage from '../pages/Order/OrderPage';
 import EditAccountPage from '../pages/EditAccount/EditAccountPage';
+import Admin from '../pages/Admin/AdminPanel';
 
 export default function AppRouter() {
   return (
@@ -28,6 +29,7 @@ export default function AppRouter() {
         <Route path="/product" element={<ProductDetail />} />
         <Route path="/order" element={<OrderPage />} />
         <Route path="/edit-account" element={<EditAccountPage />} />
+        <Route path="/AdminPanel" element={<Admin />} />
       </Routes>
     </BrowserRouter>
   );

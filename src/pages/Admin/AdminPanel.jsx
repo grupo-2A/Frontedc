@@ -1,21 +1,34 @@
-// React Component: AdminPanel.jsx
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import './Admin.css';
 
+const API_URL = 'http://localhost:8000';
+
 const AdminPanel = () => {
   const [categorias, setCategorias] = useState([]);
   const [productos, setProductos] = useState([]);
+
+  // Para crear nuevas categorías y productos
   const [nuevaCategoria, setNuevaCategoria] = useState('');
   const [nuevoProducto, setNuevoProducto] = useState({ nombre: '', cantidad: 0, categoria_id: '' });
+
+  // Para edición de categoría
+  const [editCategoriaId, setEditCategoriaId] = useState(null);
+  const [editCategoriaNombre, setEditCategoriaNombre] = useState('');
+
+  // Para edición de producto
+  const [editProductoId, setEditProductoId] = useState(null);
+  const [editProducto, setEditProducto] = useState({ nombre: '', cantidad: 0, categoria_id: '' });
+
+  // NUEVO estado para el filtro de productos
+  const [filtroProducto, setFiltroProducto] = useState('');
 
   useEffect(() => {
     obtenerCategorias();
     obtenerProductos();
   }, []);
 
-  const API_URL = 'http://localhost:8000';
-
+  // LISTAR
   const obtenerCategorias = async () => {
     try {
       const res = await axios.get(`${API_URL}/categorias/`);
@@ -34,8 +47,34 @@ const AdminPanel = () => {
     }
   };
 
+  // GET POR ID (para edición)
+  const cargarCategoriaPorId = async (id) => {
+    try {
+      const res = await axios.get(`${API_URL}/categorias/${id}`);
+      setEditCategoriaId(res.data.id);
+      setEditCategoriaNombre(res.data.nombre);
+    } catch (error) {
+      alert('Error al cargar categoría para edición');
+    }
+  };
+
+  const cargarProductoPorId = async (id) => {
+    try {
+      const res = await axios.get(`${API_URL}/productos/${id}`);
+      setEditProductoId(res.data.id);
+      setEditProducto({
+        nombre: res.data.nombre,
+        cantidad: res.data.cantidad,
+        categoria_id: res.data.categoria_id,
+      });
+    } catch (error) {
+      alert('Error al cargar producto para edición');
+    }
+  };
+
+  // CREAR
   const crearCategoria = async () => {
-    if (!nuevaCategoria.trim()) return;
+    if (!nuevaCategoria.trim()) return alert('Nombre no puede estar vacío');
     try {
       await axios.post(`${API_URL}/categorias/`, { nombre: nuevaCategoria });
       setNuevaCategoria('');
@@ -46,7 +85,7 @@ const AdminPanel = () => {
   };
 
   const crearProducto = async () => {
-    if (!nuevoProducto.nombre.trim() || !nuevoProducto.categoria_id) return;
+    if (!nuevoProducto.nombre.trim() || !nuevoProducto.categoria_id) return alert('Datos incompletos');
     try {
       await axios.post(`${API_URL}/productos/`, nuevoProducto);
       setNuevoProducto({ nombre: '', cantidad: 0, categoria_id: '' });
@@ -56,7 +95,34 @@ const AdminPanel = () => {
     }
   };
 
+  // EDITAR (PUT)
+  const actualizarCategoria = async () => {
+    if (!editCategoriaNombre.trim()) return alert('Nombre no puede estar vacío');
+    try {
+      await axios.put(`${API_URL}/categorias/${editCategoriaId}`, { nombre: editCategoriaNombre });
+      setEditCategoriaId(null);
+      setEditCategoriaNombre('');
+      obtenerCategorias();
+    } catch (error) {
+      alert(error.response?.data?.detail || 'Error al actualizar categoría');
+    }
+  };
+
+  const actualizarProducto = async () => {
+    if (!editProducto.nombre.trim() || !editProducto.categoria_id) return alert('Datos incompletos');
+    try {
+      await axios.put(`${API_URL}/productos/${editProductoId}`, editProducto);
+      setEditProductoId(null);
+      setEditProducto({ nombre: '', cantidad: 0, categoria_id: '' });
+      obtenerProductos();
+    } catch (error) {
+      alert(error.response?.data?.detail || 'Error al actualizar producto');
+    }
+  };
+
+  // ELIMINAR
   const eliminarCategoria = async (id) => {
+    if (!window.confirm('¿Eliminar esta categoría?')) return;
     try {
       await axios.delete(`${API_URL}/categorias/${id}`);
       obtenerCategorias();
@@ -66,6 +132,7 @@ const AdminPanel = () => {
   };
 
   const eliminarProducto = async (id) => {
+    if (!window.confirm('¿Eliminar este producto?')) return;
     try {
       await axios.delete(`${API_URL}/productos/${id}`);
       obtenerProductos();
@@ -74,12 +141,23 @@ const AdminPanel = () => {
     }
   };
 
+  // FILTRADO: filtro por nombre o id parecido (convierte a minúsculas y busca coincidencias)
+  const productosFiltrados = productos.filter((prod) => {
+    const filtro = filtroProducto.toLowerCase();
+    const nombre = prod.nombre.toLowerCase();
+    const idStr = prod.id.toString();
+    return nombre.includes(filtro) || idStr.includes(filtro);
+  });
+
   return (
     <div className="admin-panel">
       <h1 className="titulo-admin">Panel de Administración</h1>
 
+      {/* CATEGORIAS */}
       <div className="seccion">
         <h2>Categorías</h2>
+
+        {/* Crear nueva */}
         <div className="form-group">
           <input
             type="text"
@@ -89,18 +167,47 @@ const AdminPanel = () => {
           />
           <button onClick={crearCategoria}>Crear</button>
         </div>
+
+        {/* Edición */}
+        {editCategoriaId && (
+          <div className="form-group edit-form">
+            <input
+              type="text"
+              value={editCategoriaNombre}
+              onChange={(e) => setEditCategoriaNombre(e.target.value)}
+            />
+            <button onClick={actualizarCategoria}>Guardar</button>
+            <button onClick={() => setEditCategoriaId(null)} className="btn-cancelar">Cancelar</button>
+          </div>
+        )}
+
+        {/* Lista */}
         <ul>
-          {categorias.map(cat => (
+          {categorias.map((cat) => (
             <li key={cat.id}>
-              {cat.nombre}
+              {cat.nombre}{' '}
+              <button onClick={() => cargarCategoriaPorId(cat.id)}>✏️</button>{' '}
               <button className="btn-delete" onClick={() => eliminarCategoria(cat.id)}>🗑️</button>
             </li>
           ))}
         </ul>
       </div>
 
+      {/* PRODUCTOS */}
       <div className="seccion">
         <h2>Productos</h2>
+
+        {/* Campo para filtrar productos */}
+        <div className="form-group">
+          <input
+            type="text"
+            placeholder="Buscar producto por nombre"
+            value={filtroProducto}
+            onChange={(e) => setFiltroProducto(e.target.value)}
+          />
+        </div>
+
+        {/* Crear nuevo */}
         <div className="form-group">
           <input
             type="text"
@@ -119,19 +226,52 @@ const AdminPanel = () => {
             onChange={(e) => setNuevoProducto({ ...nuevoProducto, categoria_id: parseInt(e.target.value) })}
           >
             <option value="">Seleccione categoría</option>
-            {categorias.map(cat => (
+            {categorias.map((cat) => (
               <option key={cat.id} value={cat.id}>{cat.nombre}</option>
             ))}
           </select>
           <button onClick={crearProducto}>Crear</button>
         </div>
+
+        {/* Edición */}
+        {editProductoId && (
+          <div className="form-group edit-form">
+            <input
+              type="text"
+              value={editProducto.nombre}
+              onChange={(e) => setEditProducto({ ...editProducto, nombre: e.target.value })}
+            />
+            <input
+              type="number"
+              value={editProducto.cantidad}
+              onChange={(e) => setEditProducto({ ...editProducto, cantidad: parseInt(e.target.value) || 0 })}
+            />
+            <select
+              value={editProducto.categoria_id}
+              onChange={(e) => setEditProducto({ ...editProducto, categoria_id: parseInt(e.target.value) })}
+            >
+              <option value="">Seleccione categoría</option>
+              {categorias.map((cat) => (
+                <option key={cat.id} value={cat.id}>{cat.nombre}</option>
+              ))}
+            </select>
+            <button onClick={actualizarProducto}>Guardar</button>
+            <button onClick={() => setEditProductoId(null)} className="btn-cancelar">Cancelar</button>
+          </div>
+        )}
+
+        {/* Lista filtrada */}
         <ul>
-          {productos.map(prod => (
+          {productosFiltrados.map((prod) => (
             <li key={prod.id}>
-              {prod.nombre} (Cantidad: {prod.cantidad})
+              {prod.nombre} (Cantidad: {prod.cantidad}) -{' '}
+              {categorias.find((c) => c.id === prod.categoria_id)?.nombre || 'Sin categoría'}
+              {' '}
+              <button onClick={() => cargarProductoPorId(prod.id)}>✏️</button>{' '}
               <button className="btn-delete" onClick={() => eliminarProducto(prod.id)}>🗑️</button>
             </li>
           ))}
+          {productosFiltrados.length === 0 && <li>No se encontraron productos.</li>}
         </ul>
       </div>
     </div>
@@ -139,3 +279,6 @@ const AdminPanel = () => {
 };
 
 export default AdminPanel;
+
+
+

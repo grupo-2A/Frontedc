@@ -20,21 +20,30 @@ const normalizarNombre = (nombre) =>
     .replace(/\s+/g, ' ') // unifica espacios
     .trim();
 
-const ProductCard = ({ producto }) => (
-  <div style={{ textAlign: 'center' }}>
-    <div className="cuadro-morado">
-      <img src={producto.imagen} alt={producto.nombre} width={120} />
+const ProductCard = ({ producto }) => {
+  const { cantidad } = producto;
+
+  let textoStock;
+  if (cantidad > 10) {
+    textoStock = "Disponible";
+  } else if (cantidad > 0 && cantidad <= 10) {
+    textoStock = `Quedan ${cantidad} unidad${cantidad > 1 ? 'es' : ''}`;
+  } else {
+    textoStock = "No hay stock";
+  }
+
+  return (
+    <div style={{ textAlign: 'center' }}>
+      <div className="cuadro-morado">
+        <img src={producto.imagen} alt={producto.nombre} width={120} />
+      </div>
+      <p className="texto-producto">{producto.nombre}</p>
+      <p className="texto-precio">${producto.precio.toLocaleString()}</p>
+      <p className="texto-stock">{textoStock}</p>
+      <button className="boton-comprar">Comprar</button>
     </div>
-    <p className="texto-producto">{producto.nombre}</p>
-    <p className="texto-precio">${producto.precio.toLocaleString()}</p>
-    {producto.cantidad !== undefined && producto.cantidad <= 10 && (
-      <p className="texto-stock">
-        Quedan {producto.cantidad} unidad{producto.cantidad > 1 ? 'es' : ''}
-      </p>
-    )}
-    <button className="boton-comprar">Comprar</button>
-  </div>
-);
+  );
+};
 
 const Productos = () => {
   const [productos, setProductos] = useState([]);
@@ -82,4 +91,5 @@ const Productos = () => {
 };
 
 export default Productos;
+
 

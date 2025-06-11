@@ -9,6 +9,7 @@ import ProductDetail from '../pages/ProductDetail/ProductDetail';
 import OrderPage from '../pages/Order/OrderPage';
 import EditAccountPage from '../pages/EditAccount/EditAccountPage';
 import Admin from '../pages/Admin/AdminPanel';
+import AllProductos from '../pages/Products/AllProductos';
 
 export default function AppRouter() {
   return (
@@ -30,6 +31,7 @@ export default function AppRouter() {
         <Route path="/order" element={<OrderPage />} />
         <Route path="/edit-account" element={<EditAccountPage />} />
         <Route path="/AdminPanel" element={<Admin />} />
+        <Route path="/AllProductos" element={<AllProductos />} />
       </Routes>
     </BrowserRouter>
   );

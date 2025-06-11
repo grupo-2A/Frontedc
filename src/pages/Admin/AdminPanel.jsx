@@ -8,19 +8,15 @@ const AdminPanel = () => {
   const [categorias, setCategorias] = useState([]);
   const [productos, setProductos] = useState([]);
 
-  // Para crear nuevas categorías y productos
   const [nuevaCategoria, setNuevaCategoria] = useState('');
-  const [nuevoProducto, setNuevoProducto] = useState({ nombre: '', cantidad: 0, categoria_id: '' });
+  const [nuevoProducto, setNuevoProducto] = useState({ nombre: '', cantidad: 0, precio: 0, categoria_id: '' });
 
-  // Para edición de categoría
   const [editCategoriaId, setEditCategoriaId] = useState(null);
   const [editCategoriaNombre, setEditCategoriaNombre] = useState('');
 
-  // Para edición de producto
   const [editProductoId, setEditProductoId] = useState(null);
-  const [editProducto, setEditProducto] = useState({ nombre: '', cantidad: 0, categoria_id: '' });
+  const [editProducto, setEditProducto] = useState({ nombre: '', cantidad: 0, precio: 0, categoria_id: '' });
 
-  // NUEVO estado para el filtro de productos
   const [filtroProducto, setFiltroProducto] = useState('');
 
   useEffect(() => {
@@ -28,7 +24,6 @@ const AdminPanel = () => {
     obtenerProductos();
   }, []);
 
-  // LISTAR
   const obtenerCategorias = async () => {
     try {
       const res = await axios.get(`${API_URL}/categorias/`);
@@ -47,7 +42,6 @@ const AdminPanel = () => {
     }
   };
 
-  // GET POR ID (para edición)
   const cargarCategoriaPorId = async (id) => {
     try {
       const res = await axios.get(`${API_URL}/categorias/${id}`);
@@ -65,6 +59,7 @@ const AdminPanel = () => {
       setEditProducto({
         nombre: res.data.nombre,
         cantidad: res.data.cantidad,
+        precio: res.data.precio,
         categoria_id: res.data.categoria_id,
       });
     } catch (error) {
@@ -72,7 +67,6 @@ const AdminPanel = () => {
     }
   };
 
-  // CREAR
   const crearCategoria = async () => {
     if (!nuevaCategoria.trim()) return alert('Nombre no puede estar vacío');
     try {
@@ -85,17 +79,17 @@ const AdminPanel = () => {
   };
 
   const crearProducto = async () => {
-    if (!nuevoProducto.nombre.trim() || !nuevoProducto.categoria_id) return alert('Datos incompletos');
+    const { nombre, cantidad, precio, categoria_id } = nuevoProducto;
+    if (!nombre.trim() || !categoria_id) return alert('Datos incompletos');
     try {
       await axios.post(`${API_URL}/productos/`, nuevoProducto);
-      setNuevoProducto({ nombre: '', cantidad: 0, categoria_id: '' });
+      setNuevoProducto({ nombre: '', cantidad: 0, precio: 0, categoria_id: '' });
       obtenerProductos();
     } catch (error) {
       alert(error.response?.data?.detail || 'Error al crear producto');
     }
   };
 
-  // EDITAR (PUT)
   const actualizarCategoria = async () => {
     if (!editCategoriaNombre.trim()) return alert('Nombre no puede estar vacío');
     try {
@@ -109,18 +103,18 @@ const AdminPanel = () => {
   };
 
   const actualizarProducto = async () => {
-    if (!editProducto.nombre.trim() || !editProducto.categoria_id) return alert('Datos incompletos');
+    const { nombre, cantidad, precio, categoria_id } = editProducto;
+    if (!nombre.trim() || !categoria_id) return alert('Datos incompletos');
     try {
       await axios.put(`${API_URL}/productos/${editProductoId}`, editProducto);
       setEditProductoId(null);
-      setEditProducto({ nombre: '', cantidad: 0, categoria_id: '' });
+      setEditProducto({ nombre: '', cantidad: 0, precio: 0, categoria_id: '' });
       obtenerProductos();
     } catch (error) {
       alert(error.response?.data?.detail || 'Error al actualizar producto');
     }
   };
 
-  // ELIMINAR
   const eliminarCategoria = async (id) => {
     if (!window.confirm('¿Eliminar esta categoría?')) return;
     try {
@@ -141,7 +135,6 @@ const AdminPanel = () => {
     }
   };
 
-  // FILTRADO: filtro por nombre o id parecido (convierte a minúsculas y busca coincidencias)
   const productosFiltrados = productos.filter((prod) => {
     const filtro = filtroProducto.toLowerCase();
     const nombre = prod.nombre.toLowerCase();
@@ -153,11 +146,9 @@ const AdminPanel = () => {
     <div className="admin-panel">
       <h1 className="titulo-admin">Panel de Administración</h1>
 
-      {/* CATEGORIAS */}
+      {/* CATEGORÍAS */}
       <div className="seccion">
         <h2>Categorías</h2>
-
-        {/* Crear nueva */}
         <div className="form-group">
           <input
             type="text"
@@ -167,8 +158,6 @@ const AdminPanel = () => {
           />
           <button onClick={crearCategoria}>Crear</button>
         </div>
-
-        {/* Edición */}
         {editCategoriaId && (
           <div className="form-group edit-form">
             <input
@@ -180,8 +169,6 @@ const AdminPanel = () => {
             <button onClick={() => setEditCategoriaId(null)} className="btn-cancelar">Cancelar</button>
           </div>
         )}
-
-        {/* Lista */}
         <ul>
           {categorias.map((cat) => (
             <li key={cat.id}>
@@ -196,8 +183,6 @@ const AdminPanel = () => {
       {/* PRODUCTOS */}
       <div className="seccion">
         <h2>Productos</h2>
-
-        {/* Campo para filtrar productos */}
         <div className="form-group">
           <input
             type="text"
@@ -206,8 +191,6 @@ const AdminPanel = () => {
             onChange={(e) => setFiltroProducto(e.target.value)}
           />
         </div>
-
-        {/* Crear nuevo */}
         <div className="form-group">
           <input
             type="text"
@@ -221,6 +204,12 @@ const AdminPanel = () => {
             value={nuevoProducto.cantidad}
             onChange={(e) => setNuevoProducto({ ...nuevoProducto, cantidad: parseInt(e.target.value) || 0 })}
           />
+          <input
+            type="number"
+            placeholder="Precio"
+            value={nuevoProducto.precio}
+            onChange={(e) => setNuevoProducto({ ...nuevoProducto, precio: parseFloat(e.target.value) || 0 })}
+          />
           <select
             value={nuevoProducto.categoria_id}
             onChange={(e) => setNuevoProducto({ ...nuevoProducto, categoria_id: parseInt(e.target.value) })}
@@ -232,8 +221,6 @@ const AdminPanel = () => {
           </select>
           <button onClick={crearProducto}>Crear</button>
         </div>
-
-        {/* Edición */}
         {editProductoId && (
           <div className="form-group edit-form">
             <input
@@ -245,6 +232,11 @@ const AdminPanel = () => {
               type="number"
               value={editProducto.cantidad}
               onChange={(e) => setEditProducto({ ...editProducto, cantidad: parseInt(e.target.value) || 0 })}
+            />
+            <input
+              type="number"
+              value={editProducto.precio}
+              onChange={(e) => setEditProducto({ ...editProducto, precio: parseFloat(e.target.value) || 0 })}
             />
             <select
               value={editProducto.categoria_id}
@@ -259,12 +251,10 @@ const AdminPanel = () => {
             <button onClick={() => setEditProductoId(null)} className="btn-cancelar">Cancelar</button>
           </div>
         )}
-
-        {/* Lista filtrada */}
         <ul>
           {productosFiltrados.map((prod) => (
             <li key={prod.id}>
-              {prod.nombre} (Cantidad: {prod.cantidad}) -{' '}
+              {prod.nombre} (Cantidad: {prod.cantidad}, Precio: ${prod.precio}) -{' '}
               {categorias.find((c) => c.id === prod.categoria_id)?.nombre || 'Sin categoría'}
               {' '}
               <button onClick={() => cargarProductoPorId(prod.id)}>✏️</button>{' '}
@@ -279,6 +269,7 @@ const AdminPanel = () => {
 };
 
 export default AdminPanel;
+
 
 
 

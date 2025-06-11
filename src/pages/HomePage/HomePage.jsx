@@ -1,31 +1,28 @@
 import React, { useState, useEffect } from 'react';
-import { FaFire } from 'react-icons/fa'; // Icono de fuego para productos destacados
-import Header from '../../components/Header/Header'; // Componente de encabezado
-import Footer from '../../components/Footer/Footer'; // Componente de pie de página
-import Productos from '../../components/Productos'; // Componente que muestra productos
-import Categorias from '../../components/Categorias'; // Componente que muestra categorías
+import { useNavigate } from 'react-router-dom';
+import { FaFire } from 'react-icons/fa';
 
-// Importar estilos externos
+import Header from '../../components/Header/Header'; // Corregido: subir dos niveles
+import Footer from '../../components/Footer/Footer';
+import Productos from '../../components/Productos';
+import Categorias from '../../components/Categorias';
+
 import './HomePage.css';
 
-// Componente simple que renderiza una línea divisoria (hr) con clase CSS "divider"
 const Divider = () => <hr className="divider" />;
 
 const HomePage = () => {
-  // Estado para controlar la visibilidad del botón "scroll to top"
+  const navigate = useNavigate();
   const [showScrollToTop, setShowScrollToTop] = useState(false);
 
-  // Array con las rutas de las imágenes que quieres rotar
   const images = [
     '/images/inicio.png',
     '/images/inicio2.png',
     '/images/inicio3.png'
   ];
 
-  // Estado para la imagen actual (índice)
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
-  // Cambiar imagen automáticamente cada 4 segundos
   useEffect(() => {
     const intervalId = setInterval(() => {
       setCurrentImageIndex(prevIndex => (prevIndex + 1) % images.length);
@@ -33,7 +30,6 @@ const HomePage = () => {
     return () => clearInterval(intervalId);
   }, [images.length]);
 
-  // Manejo del scroll para mostrar botón "scroll to top"
   useEffect(() => {
     const handleScroll = () => {
       setShowScrollToTop(window.scrollY > 300);
@@ -42,9 +38,12 @@ const HomePage = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Función para hacer scroll suave hacia arriba
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const irATodosLosProductos = () => {
+    navigate('/AllProductos'); // Asegúrate que exista esta ruta en App.jsx
   };
 
   return (
@@ -52,7 +51,6 @@ const HomePage = () => {
       <Header />
 
       <main>
-        {/* Slider de imágenes con puntos de navegación */}
         <section className="hero-image-container" style={{ textAlign: 'center' }}>
           <img
             src={images[currentImageIndex]}
@@ -85,7 +83,13 @@ const HomePage = () => {
             <FaFire className="fire-icon" />
             <h2>Productos Destacados</h2>
           </div>
-          <button className="boton-ver-mas" aria-label="Ver más productos destacados" />
+          <button
+            className="boton-ver-mas"
+            onClick={irATodosLosProductos}
+            aria-label="Ver más productos"
+          >
+            Ver más
+          </button>
         </section>
 
         <Productos />
@@ -107,7 +111,6 @@ const HomePage = () => {
       </main>
 
       <Footer />
-     
 
       {showScrollToTop && (
         <button
@@ -117,12 +120,11 @@ const HomePage = () => {
         >
           ↑
         </button>
-        
       )}
     </>
-    
   );
-    
 };
 
 export default HomePage;
+
+
